@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import AppSearchAPIConnector from "@elastic/search-ui-app-search-connector";
+import { SearchProvider, Results, SearchBox } from "@elastic/react-search-ui";
+import { Layout } from "@elastic/react-search-ui-views";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+import "@elastic/react-search-ui-views/lib/styles/styles.css";
+
+const connector = new AppSearchAPIConnector({
+  searchKey: "search-371auk61r2bwqtdzocdgutmg",
+  engineName: "search-ui-examples",
+  hostIdentifier: "host-2376rb"
+});
+
+export default function App() {
+  return (
+    <>
+    <h1>Park Search</h1>
+    <SearchProvider
+      config={{
+        apiConnector: connector
+      }}
+    >
+      {() => (
+        <div className="App">
+          <Layout
+            header={<SearchBox searchAsYouType={true} inputProps={{placeholder: 'Enter a state'}} />}
+            bodyContent={<Results titleField="title" urlField="nps_link" />}
+          />
+        </div>
+      )}
+    </SearchProvider>
+    </>
+  );
 }
-
-export default App;
